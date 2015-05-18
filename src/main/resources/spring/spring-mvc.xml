@@ -27,9 +27,12 @@
         <property name="prefix" value="/WEB-INF/pages/" />
         <property name="suffix" value=".jsp"></property>
     </bean>
+    
+    <bean id="socketIOListeners" class="com.adrian.mauction.socketio.service.SocketIOListeners">
+    </bean>
 
-	<bean id="socketIOSever" class="com.adrian.mauction.socketio.SocketIOServer" init-method="init">
-	
+	<bean id="socketIOSever" class="com.adrian.mauction.socketio.MSocketIOServer" init-method="init" destroy-method="destroy">
+	   <property name="listeners" ref="socketIOListeners"></property>
 	</bean>
     
     <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
