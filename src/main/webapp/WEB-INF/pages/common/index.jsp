@@ -7,6 +7,9 @@
 
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title><sitemesh:write property='title'/></title>
+<link rel="stylesheet"  href="${pageContext.request.contextPath}/lib/bootstrap/css/bootstrap.min.css">
+<script type="text/javascript" src="${pageContext.request.contextPath}/lib/jquery/jquery-2.1.4.min.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/lib/bootstrap/js/bootstrap.min.js"></script>
 <sitemesh:write property='head'/>
 </head>
 <body>

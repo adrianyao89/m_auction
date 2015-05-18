@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <sitemesh>
-<mapping path="/main.html" decorator="/WEB-INF/pages/common/main.jsp"></mapping>
+<mapping path="/index.html" decorator="/WEB-INF/pages/common/index.jsp"></mapping>
 <mapping path="/images/*" exclue="true"/>
 <mapping path="/css/*" exclue="true"/>
 <mapping path="/js/*" exclue="true"/>
+<mapping path="/lib/*" exclue="true"/>
 </sitemesh>
