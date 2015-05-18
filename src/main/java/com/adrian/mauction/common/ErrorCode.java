@@ -2,7 +2,7 @@ package com.adrian.mauction.common;
 
 public enum ErrorCode {
 
-	SERVER_RUNTIME(500, "服务器错误");
+	SERVER_RUNTIME(500, "服务器处理异常");
 	
 	private int code;
 	
