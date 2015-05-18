@@ -4,6 +4,7 @@
 <html>
 <head>
 <title>Insert title here</title>
+<script src="<%=request.getContextPath()%>/lib/socketio/socket.io-1.3.5.js"></script>
 </head>
 <body>
 <div>
