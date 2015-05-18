@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:p="http://www.springframework.org/schema/p"
+    xmlns:context="http://www.springframework.org/schema/context"
+    xmlns:aop="http://www.springframework.org/schema/aop"
+    xmlns:tx="http://www.springframework.org/schema/tx"
+    xsi:schemaLocation="
+        http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context.xsd
+        http://www.springframework.org/schema/aop
+        http://www.springframework.org/schema/aop/spring-aop-2.5.xsd
+        http://www.springframework.org/schema/tx
+        http://www.springframework.org/schema/tx/spring-tx-2.5.xsd">
+
+     <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource"
+         destroy-method="close">
+        <property name="driverClassName" value="#{connection['driverClassName']}"></property>
+        <property name="url" value="#{connection['url']}" />
+        <property name="username" value="#{connection['username']}" />
+        <property name="password" value="#{connection['password']}" />
+        <property name="initialSize" value="#{connection['initialSize']}" />
+        <property name="maxActive" value="#{connection['maxActive']}" />
+        <property name="maxIdle" value="#{connection['maxIdle']}" />
+        <property name="minIdle" value="#{connection['minIdle']}" />
+        <property name="testOnBorrow" value="#{connection['testOnBorrow']}"></property>
+        <property name="testOnReturn" value="#{connection['testOnReturn']}"></property>
+        <property name="testWhileIdle" value="#{connection['testWhileIdle']}"></property>
+        <property name="validationQuery" value="#{connection['validationQuery']}"></property>
+        <property name="timeBetweenEvictionRunsMillis" value="#{connection['timeBetweenEvictionRunsMillis']}"></property>
+        <property name="minEvictableIdleTimeMillis" value="#{connection['minEvictableIdleTimeMillis']}"></property>
+        <property name="numTestsPerEvictionRun" value="#{connection['numTestsPerEvictionRun']}"></property>
+        <property name="removeAbandoned" value="#{connection['removeAbandoned']}"/>
+        <property name="removeAbandonedTimeout" value="#{connection['removeAbandonedTimeout']}"/>
+     </bean>
+     
+    <bean id="txManager"
+        class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource" ref="dataSource" />
+    </bean>
+    
+    <tx:annotation-driven transaction-manager="txManager" />
+    
+    <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+    	<property name="dataSource" ref="dataSource" />
+    	<property name="typeAliasesPackage" value="com.adrian.mauction.bean.pojo"/>
+    	<property  name="mapperLocations"  value="#{connection['mapperLocations']}"/>
+    </bean>
+    
+    <bean id="sqlSession" class="org.mybatis.spring.SqlSessionTemplate">
+       <constructor-arg index="0" ref="sqlSessionFactory" />
+    </bean>
+</beans>
