@@ -1,5 +1,10 @@
 package com.adrian.mauction.socketio;
 
+import java.util.Map;
+import java.util.Map.Entry;
+
+import org.springframework.util.StringUtils;
+
 import com.corundumstudio.socketio.Configuration;
 import com.corundumstudio.socketio.SocketIOServer;
 
@@ -11,7 +16,9 @@ public class MSocketIOServer {
 	
 	private SocketIOServer server;
 	
-	private Object listeners;
+	private Object defaultListeners;
+	
+	private Map<String, Object> listenersMap;
 
 	public void init() {
 		Configuration config = new Configuration();
@@ -19,8 +26,21 @@ public class MSocketIOServer {
         config.setHostname(hostname);
 
         server = new SocketIOServer(config);
-        server.addListeners(listeners);
+        addListerners();
         server.start();
+	}
+	
+	private void addListerners() {
+		server.addListeners(defaultListeners);
+        if (listenersMap != null) {
+        	for (Entry<String, Object> listenersEntry : listenersMap.entrySet()) {
+        		String nameSpace = listenersEntry.getKey();
+        		Object listeners = listenersEntry.getValue();
+        		if (!StringUtils.isEmpty(nameSpace) && listeners != null) {
+        			server.addNamespace(nameSpace).addListeners(listeners);
+        		}
+        	}
+        }
 	}
 	
 	public void destroy() {
@@ -33,6 +53,14 @@ public class MSocketIOServer {
 
 	public void setHostname(String hostname) {
 		this.hostname = hostname;
+	}
+
+	public void setDefaultListeners(Object defaultListeners) {
+		this.defaultListeners = defaultListeners;
+	}
+
+	public void setListenersMap(Map<String, Object> listenersMap) {
+		this.listenersMap = listenersMap;
 	}
 
 }

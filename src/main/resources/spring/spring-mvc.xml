@@ -28,11 +28,14 @@
         <property name="suffix" value=".jsp"></property>
     </bean>
     
-    <bean id="socketIOListeners" class="com.adrian.mauction.socketio.service.SocketIOListeners">
+    <bean id="productChangeObserver" class="com.adrian.mauction.socketio.ProductChangeObserver"></bean>
+    
+    <bean id="defaultListeners" class="com.adrian.mauction.socketio.service.SocketIOListeners">
+        <property name="observer" ref="productChangeObserver"></property>
     </bean>
-
+    
 	<bean id="socketIOSever" class="com.adrian.mauction.socketio.MSocketIOServer" init-method="init" destroy-method="destroy">
-	   <property name="listeners" ref="socketIOListeners"></property>
+	   <property name="defaultListeners" ref="defaultListeners"></property>
 	</bean>
     
     <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
