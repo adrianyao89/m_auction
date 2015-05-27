@@ -6,18 +6,28 @@ public class ServiceException extends Exception {
 
 	private static final long serialVersionUID = 1L;
 	
-	private ErrorCode errorCode;
+	private Integer errorCode;
 	
 	public ServiceException(ErrorCode errorCode, String message) {
+		super(message);
+		this.errorCode = errorCode.getCode();
+	}
+	
+	public ServiceException(Integer errorCode, String message) {
 		super(message);
 		this.errorCode = errorCode;
 	}
 	
 	public ServiceException(ErrorCode errorCode) {
+		super(errorCode.getMessage());
+		this.errorCode = errorCode.getCode();
+	}
+	
+	public ServiceException(Integer errorCode) {
 		this.errorCode = errorCode;
 	}
 	
-	public ErrorCode getErrorCode() {
+	public Integer getErrorCode() {
 		return errorCode;
 	}
 }

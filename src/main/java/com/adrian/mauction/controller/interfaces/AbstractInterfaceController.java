@@ -61,26 +61,25 @@ public class AbstractInterfaceController {
 	 * @param message
 	 * @return
 	 */
-	public <T> ResponseEntity<String> buildErrorResponse(T body, ErrorCode code, String message) {
+	public <T> ResponseEntity<String> buildErrorResponse(T body, Integer code, String message) {
 		JSONObject response = new JSONObject();
 		JSONObject state = new JSONObject();
-		state.put("code", code.getCode());
-		state.put("msg", StringUtils.isEmpty(message) ? code.getMessage() : message);
+		state.put("code", code);
+		state.put("msg", message);
 		response.put("state", state);
 		response.put("body", body);
 		return new ResponseEntity<String>(JSON.toJSONString(response), HEADER, HttpStatus.OK);
 	}
 	
 	public <T> ResponseEntity<String> buildErrorResponse(T body, ErrorCode code) {
-		return buildErrorResponse(body, code, null);
+		return buildErrorResponse(body, code.getCode(), code.getMessage());
 	}
 	
 	@ExceptionHandler(Exception.class)
 	public ResponseEntity<String> handle(Exception e) {
 		if (e instanceof ServiceException) {
-			String message = e.getMessage();
-			ErrorCode errorCode = ((ServiceException) e).getErrorCode();
-			return buildErrorResponse(null, errorCode, StringUtils.isEmpty(message) ? errorCode.getMessage() : message);
+			Integer errorCode = ((ServiceException) e).getErrorCode();
+			return buildErrorResponse(null, errorCode, e.getMessage());
 		}
 		return buildErrorResponse(null, ErrorCode.SERVER_RUNTIME);
 	}
